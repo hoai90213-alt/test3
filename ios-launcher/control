@@ -1,0 +1,9 @@
+Package: com.example.lwjgllauncher
+Name: LWJGLLauncher
+Version: 0.1.0
+Architecture: iphoneos-arm64
+Description: TrollStore-focused Java launcher for LWJGL-Game
+Maintainer: LWJGLLauncher Team
+Author: LWJGLLauncher Team
+Section: Applications
+Depends: firmware (>= 14.0)

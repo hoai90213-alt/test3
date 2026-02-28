@@ -1,0 +1,67 @@
+name: theos-trollstore-build
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "ios-launcher/**"
+      - ".github/workflows/theos-trollstore.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    env:
+      THEOS: ${{ github.workspace }}/theos
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install host dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git \
+            make \
+            clang \
+            zip \
+            unzip \
+            rsync \
+            openjdk-17-jdk \
+            pkg-config \
+            libplist-dev \
+            libssl-dev
+
+      - name: Build and install ldid
+        run: |
+          git clone --depth=1 https://github.com/ProcursusTeam/ldid.git /tmp/ldid
+          make -C /tmp/ldid
+          sudo install -m 0755 /tmp/ldid/ldid /usr/local/bin/ldid
+          ldid -h | head -n 1
+
+      - name: Install Theos and SDKs
+        run: |
+          git clone --recursive --depth=1 https://github.com/theos/theos.git "$THEOS"
+          git clone --depth=1 https://github.com/theos/sdks.git "$THEOS/sdks"
+
+      - name: Ensure scripts are executable
+        run: |
+          chmod +x ios-launcher/scripts/*.sh
+
+      - name: Build Java payload
+        run: ./ios-launcher/scripts/build_game_jar.sh
+
+      - name: Build Theos app and IPA
+        run: |
+          make -C ios-launcher clean stage package
+          make -C ios-launcher ipa
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lwjgl-ios-launcher
+          path: |
+            ios-launcher/packages/*.deb
+            ios-launcher/packages/*.ipa
+            ios-launcher/LWJGLLauncher/Resources/java/game-ios.jar
+            ios-launcher/.theos/_/Applications/LWJGLLauncher.app/lwjgl-natives/liblwjgldummy.dylib
