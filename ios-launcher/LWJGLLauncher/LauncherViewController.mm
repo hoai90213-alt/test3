@@ -5,7 +5,6 @@
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UIButton *launchButton;
 @property (nonatomic, strong) UITextView *logView;
-@property (nonatomic, assign) BOOL launchedOnce;
 @end
 
 @implementation LauncherViewController
@@ -17,7 +16,7 @@
 
 	self.statusLabel = [[UILabel alloc] init];
 	self.statusLabel.translatesAutoresizingMaskIntoConstraints = NO;
-	self.statusLabel.text = @"Ready";
+	self.statusLabel.text = @"Ready. Tap Launch JVM to start.";
 	self.statusLabel.numberOfLines = 0;
 	self.statusLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightSemibold];
 
@@ -30,7 +29,7 @@
 	self.logView.translatesAutoresizingMaskIntoConstraints = NO;
 	self.logView.editable = NO;
 	self.logView.font = [UIFont monospacedSystemFontOfSize:12 weight:UIFontWeightRegular];
-	self.logView.text = @"Launcher initialized.\n";
+	self.logView.text = @"Launcher initialized.\nTap Launch JVM to start runtime.\n";
 	self.logView.backgroundColor = [UIColor secondarySystemBackgroundColor];
 
 	UIStackView *stack = [[UIStackView alloc] initWithArrangedSubviews:@[self.statusLabel, self.launchButton, self.logView]];
@@ -45,14 +44,6 @@
 		[stack.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-16.0],
 		[stack.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:-16.0],
 	]];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	if (!self.launchedOnce) {
-		self.launchedOnce = YES;
-		[self startLaunch];
-	}
 }
 
 - (void)appendLog:(NSString *)message {

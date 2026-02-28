@@ -24,4 +24,19 @@ if [[ ! -f "$DEST/lib/jli/libjli.dylib" && ! -f "$DEST/lib/libjli.dylib" ]]; the
 	echo "Warning: libjli was not found in copied runtime."
 fi
 
+if command -v ldid >/dev/null 2>&1; then
+	echo "Signing Mach-O binaries in bundled JRE..."
+	signed_count=0
+	while IFS= read -r -d '' file_path; do
+		if file -b "$file_path" | grep -q "Mach-O"; then
+			chmod +x "$file_path" || true
+			ldid -S "$file_path"
+			signed_count=$((signed_count + 1))
+		fi
+	done < <(find "$DEST" -type f -print0)
+	echo "Signed $signed_count Mach-O files with ldid."
+else
+	echo "Warning: ldid not found. JRE binaries were copied without ad-hoc signing."
+fi
+
 echo "Copied OpenJDK runtime to $DEST"
