@@ -42,7 +42,10 @@ jobs:
       - name: Install Theos and SDKs
         run: |
           git clone --recursive --depth=1 https://github.com/theos/theos.git "$THEOS"
-          git clone --depth=1 https://github.com/theos/sdks.git "$THEOS/sdks"
+          if [ ! -d "$THEOS/sdks/.git" ]; then
+            rm -rf "$THEOS/sdks"
+            git clone --depth=1 https://github.com/theos/sdks.git "$THEOS/sdks"
+          fi
 
       - name: Ensure scripts are executable
         run: |
