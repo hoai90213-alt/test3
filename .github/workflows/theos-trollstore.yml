@@ -30,7 +30,8 @@ jobs:
             openjdk-17-jdk \
             pkg-config \
             libplist-dev \
-            libssl-dev
+            libssl-dev \
+            libtinfo6
 
       - name: Build and install ldid
         run: |
@@ -46,6 +47,12 @@ jobs:
             rm -rf "$THEOS/sdks"
             git clone --depth=1 https://github.com/theos/sdks.git "$THEOS/sdks"
           fi
+          if [ ! -x "$THEOS/toolchain/linux/iphone/bin/clang" ]; then
+            ARCH="$(uname -m)"
+            curl -sL "https://github.com/L1ghtmann/llvm-project/releases/latest/download/iOSToolchain-${ARCH}.tar.xz" \
+              | tar -xJ -C "$THEOS/toolchain/"
+          fi
+          test -x "$THEOS/toolchain/linux/iphone/bin/clang"
 
       - name: Ensure scripts are executable
         run: |
