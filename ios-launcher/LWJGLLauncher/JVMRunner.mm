@@ -72,6 +72,10 @@ static int LaunchJVMHost(NSString **messageOut) {
 		*messageOut = [NSString stringWithFormat:@"posix_spawn failed (%d): %s", spawnResult, strerror(spawnResult)];
 		return -202;
 	}
+	if (pid <= 0) {
+		*messageOut = [NSString stringWithFormat:@"posix_spawn returned invalid pid %d", pid];
+		return -205;
+	}
 
 	int exitCode = WaitForChild(pid);
 	*messageOut = [NSString stringWithFormat:
@@ -88,7 +92,13 @@ static int LaunchJVMHost(NSString **messageOut) {
 + (void)launchGameWithCompletion:(JVMCompletion)completion {
 	dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
 		NSString *message = @"Launcher finished.";
-		int exitCode = LaunchJVMHost(&message);
+		int exitCode = -299;
+		@try {
+			exitCode = LaunchJVMHost(&message);
+		} @catch (NSException *exception) {
+			message = [NSString stringWithFormat:@"Launcher exception: %@ - %@", exception.name, exception.reason];
+			exitCode = -298;
+		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			completion(exitCode, message);
 		});
