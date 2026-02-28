@@ -20,7 +20,7 @@ This folder adds a Theos app target that:
 - `scripts/build_game_jar.sh`: Compiles original game + stubs to `game-ios.jar`.
 - `scripts/prepare_jre.sh`: Copies external iOS arm64 OpenJDK runtime into resources.
 - `scripts/make_ipa.sh`: Builds TrollStore `.ipa` from staged app.
-- `vendor/jre17-arm64-20220817-release.tar.xz`: Bundled iOS arm64 JRE archive used by CI.
+- `vendor/jre8-zero-aarch64-ios.tar.xz`: Bundled iOS arm64 Zero VM JRE archive used by CI.
 
 ## Ubuntu (WSL) Build Prerequisites
 

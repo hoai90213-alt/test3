@@ -16,9 +16,26 @@ if [[ ! -d "$SRC" ]]; then
 	exit 1
 fi
 
+SOURCE_ROOT="$SRC"
+if [[ ! -f "$SOURCE_ROOT/lib/jli/libjli.dylib" && ! -f "$SOURCE_ROOT/lib/libjli.dylib" ]]; then
+	CANDIDATE_FILE="$(find "$SOURCE_ROOT" -maxdepth 3 -type f \( -path '*/lib/jli/libjli.dylib' -o -path '*/lib/libjli.dylib' \) | head -n 1 || true)"
+	if [[ -n "$CANDIDATE_FILE" ]]; then
+		if [[ "$CANDIDATE_FILE" == */lib/jli/libjli.dylib ]]; then
+			SOURCE_ROOT="${CANDIDATE_FILE%/lib/jli/libjli.dylib}"
+		else
+			SOURCE_ROOT="${CANDIDATE_FILE%/lib/libjli.dylib}"
+		fi
+	fi
+fi
+
+if [[ ! -f "$SOURCE_ROOT/lib/jli/libjli.dylib" && ! -f "$SOURCE_ROOT/lib/libjli.dylib" ]]; then
+	echo "Could not find libjli under source directory: $SRC"
+	exit 1
+fi
+
 rm -rf "$DEST"
 mkdir -p "$DEST"
-rsync -a --delete "$SRC"/ "$DEST"/
+rsync -a --delete "$SOURCE_ROOT"/ "$DEST"/
 
 if [[ ! -f "$DEST/lib/jli/libjli.dylib" && ! -f "$DEST/lib/libjli.dylib" ]]; then
 	echo "Warning: libjli was not found in copied runtime."

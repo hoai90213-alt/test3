@@ -66,10 +66,10 @@ jobs:
 
       - name: Prepare bundled iOS JRE
         run: |
-          test -f ios-launcher/vendor/jre17-arm64-20220817-release.tar.xz
+          test -f ios-launcher/vendor/jre8-zero-aarch64-ios.tar.xz
           rm -rf /tmp/lwjgl-jre
           mkdir -p /tmp/lwjgl-jre
-          tar -xJf ios-launcher/vendor/jre17-arm64-20220817-release.tar.xz -C /tmp/lwjgl-jre
+          tar -xJf ios-launcher/vendor/jre8-zero-aarch64-ios.tar.xz -C /tmp/lwjgl-jre
           ./ios-launcher/scripts/prepare_jre.sh /tmp/lwjgl-jre
           test -f ios-launcher/LWJGLLauncher/Resources/jre/lib/libjli.dylib || \
             test -f ios-launcher/LWJGLLauncher/Resources/jre/lib/jli/libjli.dylib
