@@ -1,0 +1,4 @@
+ios-launcher/.build/
+ios-launcher/.theos/
+ios-launcher/packages/
+ios-launcher/LWJGLLauncher/Resources/java/game-ios.jar
