@@ -18,7 +18,7 @@ fi
 
 SOURCE_ROOT="$SRC"
 if [[ ! -f "$SOURCE_ROOT/lib/jli/libjli.dylib" && ! -f "$SOURCE_ROOT/lib/libjli.dylib" ]]; then
-	CANDIDATE_FILE="$(find "$SOURCE_ROOT" -maxdepth 3 -type f \( -path '*/lib/jli/libjli.dylib' -o -path '*/lib/libjli.dylib' \) | head -n 1 || true)"
+	CANDIDATE_FILE="$(find "$SOURCE_ROOT" -maxdepth 6 -type f \( -path '*/lib/jli/libjli.dylib' -o -path '*/lib/libjli.dylib' \) | head -n 1 || true)"
 	if [[ -n "$CANDIDATE_FILE" ]]; then
 		if [[ "$CANDIDATE_FILE" == */lib/jli/libjli.dylib ]]; then
 			SOURCE_ROOT="${CANDIDATE_FILE%/lib/jli/libjli.dylib}"
