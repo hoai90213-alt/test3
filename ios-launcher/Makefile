@@ -5,6 +5,7 @@ include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = LWJGLLauncher
 LIBRARY_NAME = lwjgldummy
+TOOL_NAME = LWJGLJVMHost
 
 LWJGLLauncher_FILES = \
 	LWJGLLauncher/main.mm \
@@ -28,8 +29,14 @@ lwjgldummy_CFLAGS = -fobjc-arc -fvisibility=hidden
 lwjgldummy_INSTALL_PATH = /Applications/LWJGLLauncher.app/lwjgl-natives
 lwjgldummy_LDFLAGS = -Wl,-install_name,@rpath/liblwjgldummy.dylib
 
+LWJGLJVMHost_FILES = LWJGLJVMHost/main.mm
+LWJGLJVMHost_FRAMEWORKS = Foundation
+LWJGLJVMHost_CFLAGS = -fobjc-arc -Wno-nullability-completeness
+LWJGLJVMHost_INSTALL_PATH = /Applications/LWJGLLauncher.app
+
 include $(THEOS_MAKE_PATH)/application.mk
 include $(THEOS_MAKE_PATH)/library.mk
+include $(THEOS_MAKE_PATH)/tool.mk
 
 .PHONY: build-java prepare-jre ipa
 
