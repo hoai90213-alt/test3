@@ -29,7 +29,7 @@ lwjgldummy_CFLAGS = -fobjc-arc -fvisibility=hidden
 lwjgldummy_INSTALL_PATH = /Applications/LWJGLLauncher.app/lwjgl-natives
 lwjgldummy_LDFLAGS = -Wl,-install_name,@rpath/liblwjgldummy.dylib
 
-LWJGLJVMHost_FILES = LWJGLJVMHost/main.mm
+LWJGLJVMHost_FILES = jvmhostsrc/main.mm
 LWJGLJVMHost_FRAMEWORKS = Foundation
 LWJGLJVMHost_CFLAGS = -fobjc-arc -Wno-nullability-completeness
 LWJGLJVMHost_INSTALL_PATH = /Applications/LWJGLLauncher.app
