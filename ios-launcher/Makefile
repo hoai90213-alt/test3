@@ -6,6 +6,7 @@ include $(THEOS)/makefiles/common.mk
 APPLICATION_NAME = LWJGLLauncher
 LIBRARY_NAME = lwjgldummy
 TOOL_NAME = LWJGLJVMHost
+ENTITLEMENTS_FILE = entitlements.plist
 
 LWJGLLauncher_FILES = \
 	LWJGLLauncher/main.mm \
@@ -22,6 +23,7 @@ LWJGLLauncher_BUNDLE_NAME = LWJGLLauncher
 LWJGLLauncher_BUNDLE_DISPLAY_NAME = LWJGL Launcher
 LWJGLLauncher_BUNDLE_VERSION = 1
 LWJGLLauncher_BUNDLE_SHORT_VERSION_STRING = 0.1.0
+LWJGLLauncher_CODESIGN_FLAGS = -S$(ENTITLEMENTS_FILE)
 
 lwjgldummy_FILES = native-lwjgl-dummy/dummy_lwjgl.mm
 lwjgldummy_FRAMEWORKS = Foundation
@@ -33,6 +35,7 @@ LWJGLJVMHost_FILES = jvmhostsrc/main.mm
 LWJGLJVMHost_FRAMEWORKS = Foundation
 LWJGLJVMHost_CFLAGS = -fobjc-arc -Wno-nullability-completeness
 LWJGLJVMHost_INSTALL_PATH = /Applications/LWJGLLauncher.app
+LWJGLJVMHost_CODESIGN_FLAGS = -S$(ENTITLEMENTS_FILE)
 
 include $(THEOS_MAKE_PATH)/application.mk
 include $(THEOS_MAKE_PATH)/library.mk
