@@ -26,6 +26,7 @@ jobs:
             clang \
             zip \
             unzip \
+            xz-utils \
             rsync \
             openjdk-17-jdk \
             pkg-config \
@@ -49,8 +50,10 @@ jobs:
           fi
           if [ ! -x "$THEOS/toolchain/linux/iphone/bin/clang" ]; then
             ARCH="$(uname -m)"
-            curl -sL "https://github.com/L1ghtmann/llvm-project/releases/latest/download/iOSToolchain-${ARCH}.tar.xz" \
-              | tar -xJ -C "$THEOS/toolchain/"
+            TOOLCHAIN_ARCHIVE="/tmp/iOSToolchain-${ARCH}.tar.xz"
+            curl -fL --retry 3 -o "$TOOLCHAIN_ARCHIVE" \
+              "https://github.com/L1ghtmann/llvm-project/releases/latest/download/iOSToolchain-${ARCH}.tar.xz"
+            tar -xJf "$TOOLCHAIN_ARCHIVE" -C "$THEOS/toolchain/"
           fi
           test -x "$THEOS/toolchain/linux/iphone/bin/clang"
 
